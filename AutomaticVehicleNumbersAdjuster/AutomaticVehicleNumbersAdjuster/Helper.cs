@@ -1,11 +1,10 @@
 ﻿using AutomaticVehicleNumbersAdjuster.UI;
-using ColossalFramework.Plugins;
 using ColossalFramework.UI;
-using Harmony;
+using HarmonyLib;
+using CitiesHarmony.API;
 using ICities;
 using System;
 using System.IO;
-using System.Reflection;
 using UnityEngine;
 
 namespace AutomaticVehicleNumbersAdjuster
@@ -42,6 +41,30 @@ namespace AutomaticVehicleNumbersAdjuster
         }
     }
 
+    public static class Patcher
+    {
+        private const string HarmonyId = "Overhatted.AutomaticVehicleNumbersAdjuster";
+        private static bool patched = false;
+
+        public static void PatchAll()
+        {
+            if (patched) return;
+
+            patched = true;
+            var harmony = new Harmony(HarmonyId);
+            harmony.PatchAll(typeof(Patcher).Assembly);
+        }
+
+        public static void UnpatchAll()
+        {
+            if (!patched) return;
+
+            var harmony = new Harmony(HarmonyId);
+            harmony.UnpatchAll(HarmonyId);
+            patched = false;
+        }
+    }
+
     public class Loader : ILoadingExtension
     {
         public void OnCreated(ILoading loading)
@@ -50,13 +73,12 @@ namespace AutomaticVehicleNumbersAdjuster
             Helper.PrintError("");
 #endif
 
-            var harmony = HarmonyInstance.Create("com.overhatted.automaticvehiclenumbersadjuster");
-            harmony.PatchAll(Assembly.GetExecutingAssembly());
+            if (HarmonyHelper.IsHarmonyInstalled) Patcher.PatchAll();
         }
 
         public void OnReleased()
         {
-
+            if (HarmonyHelper.IsHarmonyInstalled) Patcher.UnpatchAll();
         }
 
         public void OnLevelLoaded(LoadMode mode)
