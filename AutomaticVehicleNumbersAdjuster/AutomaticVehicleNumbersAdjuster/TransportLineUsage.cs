@@ -145,8 +145,6 @@ namespace AutomaticVehicleNumbersAdjuster
                 }
             }
 
-            int Budget = Singleton<EconomyManager>.instance.GetBudget(TransportLineInstance.Info.m_class);
-
             /*
             PassengersPerInterval = PassengersPerFrame * FramesPerInterval
             PassengersPerFrame = PassengersPerPeriod / FramesPerPeriod
@@ -156,13 +154,15 @@ namespace AutomaticVehicleNumbersAdjuster
 
             if (this.IsAtLeastOneDayOld)
             {
-                Budget = (Budget * TransportLineInstance.m_budget + 50) / 100;
+                //Singleton<EconomyManager>.instance.GetBudget is between 50 and 150. It's the number the appears on the overall budget panel.
+                //TransportLineInstance.m_budget is between 5 and 500. It's the number the appears on the transport line panel.
+                //This "Budget" formula comes from the vanilla TransportLine.CalculateTargetVehicleCount method.
+                //The result is between 3 and 750 (%).
+                int Budget = (Singleton<EconomyManager>.instance.GetBudget(TransportLineInstance.Info.m_class) * TransportLineInstance.m_budget + 50) / 100;
 
-                double BudgetMultiplier = 1.2;//Inverse of Vehicle Capacity Allowed To Be Filled
-                if (Budget > 100)
-                {
-                    BudgetMultiplier += 0.016 * (Budget - 100);//Up to a maximum of 2 (No longer)
-                }
+                //Inverse of Vehicle Capacity Allowed To Be Filled
+                //A number betweem 1.2 (if budget is lower or equal than 100) and 2.3 (if budget is 750)
+                double BudgetMultiplier = 1 + 0.002 * Math.Max(Budget, 100);
 
                 double RecommendedNumberOfVehiclesFromPassengers = BudgetMultiplier * this.MaximumNumberOfPassengersPerInterval * (this.PeriodCalculator.Period * VehicleNumbersManager.CurrentSettings.NumberOfHourIntervalsToStore) / (this.VehicleCapacity * SimulationManager.DAYTIME_FRAMES);
 
