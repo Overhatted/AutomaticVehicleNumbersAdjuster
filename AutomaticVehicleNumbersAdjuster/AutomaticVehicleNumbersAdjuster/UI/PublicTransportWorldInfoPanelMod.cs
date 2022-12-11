@@ -39,7 +39,7 @@ namespace AutomaticVehicleNumbersAdjuster.UI
                         for (byte i = 0; i != VehicleNumbersManager.CurrentSettings.NumberOfHourIntervalsToStore; i++)
                         {
                             ushort NumberOfPassengersInThisInterval = StopObject.GetAverageIntervalPassengers(i);
-                            if(NumberOfPassengersInThisInterval > StopMaximumNumberOfPassengersPerInterval)
+                            if (NumberOfPassengersInThisInterval > StopMaximumNumberOfPassengersPerInterval)
                             {
                                 StopMaximumNumberOfPassengersPerInterval = NumberOfPassengersInThisInterval;
                             }
@@ -54,6 +54,7 @@ namespace AutomaticVehicleNumbersAdjuster.UI
         }
     }
 
+#if DEBUG
     [HarmonyPatch(typeof(PublicTransportWorldInfoPanel))]
     [HarmonyPatch("UpdateBindings")]
     public class UpdateBindingsMod
@@ -70,24 +71,24 @@ namespace AutomaticVehicleNumbersAdjuster.UI
 
                 TransportLine TransportLineInstance = Singleton<TransportManager>.instance.m_lines.m_buffer[LineID];
 
-                string VehicleAmountLabelText = "Number of vehicles: " + TransportLineInstance.CountVehicles(LineID) + " / " + TransportLineUsageObject.GetRecommendedNumberOfVehicles();
+                string VehicleAmountLabelText = ";" + TransportLineUsageObject.GetRecommendedNumberOfVehicles();
 
-#if DEBUG
                 if (VehicleNumbersManager.CurrentSettings.EnableExtraVehicles)
                 {
-                    VehicleAmountLabelText += "; Extra Vehicles: " + TransportLineUsageObject.ExtraVehicles;
+                    VehicleAmountLabelText += ";E: " + TransportLineUsageObject.ExtraVehicles;
                 }
 
                 VehicleInfo VehicleInfoInstance = Singleton<VehicleManager>.instance.m_vehicles.m_buffer[TransportLineInstance.m_vehicles].Info;
 
-                VehicleAmountLabelText += "; " + TransportLineUsageObject.PeriodCalculator.Period;
-                VehicleAmountLabelText += "; " + TransportLineUsageObject.PeriodCalculator.PredictedPeriod;
-                VehicleAmountLabelText += "; " + PeriodPredictor.PredictPeriod(LineID);
-                VehicleAmountLabelText += "; " + TransportLineInstance.m_totalLength + " | " + VehicleInfoInstance.m_acceleration + " | " + VehicleInfoInstance.m_braking + " | " + VehicleInfoInstance.m_maxSpeed;
-#endif
+                VehicleAmountLabelText += ";" + TransportLineUsageObject.PeriodCalculator.Period;
+                VehicleAmountLabelText += ";" + TransportLineUsageObject.PeriodCalculator.PredictedPeriod;
+                VehicleAmountLabelText += ";" + PeriodPredictor.PredictPeriod(LineID);
+                VehicleAmountLabelText += ";" + TransportLineInstance.m_totalLength + "|" + VehicleInfoInstance.m_acceleration + "|" + VehicleInfoInstance.m_braking + "|" + VehicleInfoInstance.m_maxSpeed;
 
-                VehicleAmountLabel.text = VehicleAmountLabelText;
+
+                VehicleAmountLabel.text += VehicleAmountLabelText;
             }
         }
     }
+#endif
 }
