@@ -111,7 +111,7 @@ namespace AutomaticVehicleNumbersAdjuster
 
             if(!TransportLineInstance.Complete)
             {
-                return 1;
+                return -1;
             }
 
             TransportInfo TransportLineInfo = TransportLineInstance.Info;
@@ -170,7 +170,7 @@ namespace AutomaticVehicleNumbersAdjuster
 
                 if(Double.IsNaN(RecommendedNumberOfVehicles))
                 {
-                    return TransportLineMod.CalculateTargetVehicleCount(this.ID);
+                    return -1;
                 }
                 else
                 {
@@ -179,7 +179,7 @@ namespace AutomaticVehicleNumbersAdjuster
             }
             else
             {
-                return TransportLineMod.CalculateTargetVehicleCount(this.ID);
+                return -1;
             }
         }
 
