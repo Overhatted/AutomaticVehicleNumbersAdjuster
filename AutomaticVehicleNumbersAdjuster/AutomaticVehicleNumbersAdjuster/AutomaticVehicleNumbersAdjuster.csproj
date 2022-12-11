@@ -85,8 +85,8 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>mkdir "C:\Program Files (x86)\Steam\steamapps\workshop\content\255710\1218121337"
-del "C:\Program Files (x86)\Steam\steamapps\workshop\content\255710\1218121337\$(TargetFileName)"
-xcopy /y "$(TargetPath)" "C:\Program Files (x86)\Steam\steamapps\workshop\content\255710\1218121337"</PostBuildEvent>
+del /q "C:\Program Files (x86)\Steam\steamapps\workshop\content\255710\1218121337\*"
+xcopy /y /s "$(TargetDir)*.dll" "C:\Program Files (x86)\Steam\steamapps\workshop\content\255710\1218121337"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
