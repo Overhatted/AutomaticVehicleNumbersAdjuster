@@ -6,7 +6,7 @@ namespace AutomaticVehicleNumbersAdjuster
     [HarmonyPatch("LoadPassengers")]
     public class BusAIMod
     {
-        public static void Postfix(ushort vehicleID, ref Vehicle data, ushort currentStop)
+        public static void Postfix(ushort vehicleID, ref Vehicle data, ushort currentStop, ushort nextStop)
         {
             TransportLineUsage.AfterLoadPassengers(vehicleID, ref data, currentStop);
         }
@@ -30,7 +30,7 @@ namespace AutomaticVehicleNumbersAdjuster
     [HarmonyPatch("LoadPassengers")]
     public class PassengerFerryAIMod
     {
-        public static void Postfix(ushort vehicleID, ref Vehicle data, ushort currentStop)
+        public static void Postfix(ushort vehicleID, ref Vehicle data, ushort currentStop, ushort nextStop)
         {
             TransportLineUsage.AfterLoadPassengers(vehicleID, ref data, currentStop);
         }
@@ -40,7 +40,7 @@ namespace AutomaticVehicleNumbersAdjuster
     [HarmonyPatch("LoadPassengers")]
     public class PassengerBlimpAIMod
     {
-        public static void Postfix(ushort vehicleID, ref Vehicle data, ushort currentStop)
+        public static void Postfix(ushort vehicleID, ref Vehicle data, ushort currentStop, ushort nextStop)
         {
             TransportLineUsage.AfterLoadPassengers(vehicleID, ref data, currentStop);
         }
@@ -50,7 +50,7 @@ namespace AutomaticVehicleNumbersAdjuster
     [HarmonyPatch("LoadPassengers")]
     public class PassengerTrainAIMod
     {
-        public static void Postfix(ushort vehicleID, ref Vehicle data, ushort currentStop)
+        public static void Postfix(ushort vehicleID, ref Vehicle data, ushort currentStop, ushort nextStop)
         {
             TransportLineUsage.AfterLoadPassengers(vehicleID, ref data, currentStop);
         }
@@ -60,7 +60,7 @@ namespace AutomaticVehicleNumbersAdjuster
     [HarmonyPatch("LoadPassengers")]
     public class TramAIMod
     {
-        public static void Postfix(ushort vehicleID, ref Vehicle data, ushort currentStop)
+        public static void Postfix(ushort vehicleID, ref Vehicle data, ushort currentStop, ushort nextStop)
         {
             TransportLineUsage.AfterLoadPassengers(vehicleID, ref data, currentStop);
         }
